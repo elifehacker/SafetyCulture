@@ -50,7 +50,7 @@ def get_3rd_party_data_from_email(email, third_party_data):
 def prompt_for_input(latest_msgs, msg, df, third_party_data):
     while True:
         print('enter: proceed\n\
-            1: check latest message\n\
+            1: check latest message of each user\n\
             2: print database\n\
             3: print 3rd party data\n\
             4: print database record of the latest message\n\
