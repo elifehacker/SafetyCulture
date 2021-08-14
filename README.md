@@ -1,9 +1,13 @@
 # SafetyCulture
 
 This task was done by reading the content of message_bus.json line by line to sumulate the incoming stream of data. With every line, the following command prompt is returned.
+
 Option 1 2 and 3 print the data as is.
+
 Option 4 find the database data from database.csv stored in a panda dataframe based on the user id
+
 OPtion 5 find 3rd party data by getting the email column in what is returned from option 4, then finding it in the list of json data from 3rd_party_data.json
+
 ```
 (base) F:\workspace\Data Engineering Test>python monitor.py
 update data with user_id ffbf731b-897f-465e-b4c7-2f5efa54989d
