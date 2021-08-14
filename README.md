@@ -1,6 +1,6 @@
 # SafetyCulture
 
-This task was done by reading the content of message_bus.json line by line to sumulate the incoming stream of data. With every line, the following command prompt is returned.
+This task was done by reading the content of message_bus.json line by line to simulate the incoming stream of data. With every line, the following command prompt is returned.
 
 Option 1 2 and 3 print the data as is.
 
