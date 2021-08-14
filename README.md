@@ -8,6 +8,8 @@ Option 4 find the database data from database.csv stored in a panda dataframe ba
 
 OPtion 5 find 3rd party data by getting the email column in what is returned from option 4, then finding it in the list of json data from 3rd_party_data.json
 
+Should there be an error, the error would be caught and saved to a txt file and it does not stop the processing of the rest of the data stream.
+
 ```
 (base) F:\workspace\Data Engineering Test>python monitor.py
 update data with user_id ffbf731b-897f-465e-b4c7-2f5efa54989d
