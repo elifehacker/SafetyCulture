@@ -2,11 +2,13 @@
 
 This task was done by reading the content of message_bus.json line by line to simulate the incoming stream of data. With every line, the following command prompt is returned.
 
-Option 1 2 and 3 print the data as is.
+Option 1 prints the latest message of every user. Every message is also appended with a timestamp.
 
-Option 4 find the database data from database.csv stored in a panda dataframe based on the user id
+Option 2 and 3 print the data as is provided for demostration purpose.
 
-OPtion 5 find 3rd party data by getting the email column in what is returned from option 4, then finding it in the list of json data from 3rd_party_data.json
+Option 4 finds the database data from database.csv stored in a panda dataframe based on the user id
+
+OPtion 5 finds 3rd party data by getting the email column in what is returned from option 4, then finding it in the list of json data from 3rd_party_data.json
 
 Should there be an error, the error would be caught and saved to a txt file and it does not stop the processing of the rest of the data stream.
 
