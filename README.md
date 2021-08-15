@@ -14,14 +14,6 @@ Should there be an error, the error would be caught and saved to a txt file and 
 
 ## Update
 1. I created a new process to send data in message_bus.json to be received in the main processor. 
-```
-python monitor.py
-```
-2. I created a simple API to demostrate how the data are going to be sent, received and processed. 
-```
-python app.py
-python data_streamer.py
-```
 
 ```
 (base) F:\workspace>cd "Data Engineering Test"
@@ -176,4 +168,49 @@ enter: proceed
             3: print 3rd party data
             4: print database record of the latest message
             5: print 3rd party data of the latest message
+```
+
+2. I created a simple API to demostrate how the data are going to be sent, received and processed. 
+```
+python app.py
+python data_streamer.py
+```
+
+```
+(base) F:\workspace\Data Engineering Test>curl localhost:5000/api/user_id/584f6006-dc4b-4dd3-bf8b-eafbd98859aa
+{
+  "3rd party info": {
+    "compay_profile": "profile",
+    "industry": "industry_2",
+    "region": "region_2",
+    "social_presence": "text_text",
+    "user_email": "phizntrg@hotmail.com"
+  },
+  "user info": {
+    "address": {
+      "1": "Address 2"
+    },
+    "city": {
+      "1": "Melbourne"
+    },
+    "company_name": {
+      "1": "Company_2"
+    },
+    "country": {
+      "1": "Australia"
+    },
+    "email": {
+      "1": "phizntrg@hotmail.com"
+    },
+    "name": {
+      "1": "Quincy Walls"
+    },
+    "postcode": {
+      "1": 3000
+    },
+    "user_id": {
+      "1": "584f6006-dc4b-4dd3-bf8b-eafbd98859aa"
+    }
+  }
+}
 ```
