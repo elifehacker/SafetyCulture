@@ -186,6 +186,19 @@ python data_streamer.py
     "social_presence": "text_text",
     "user_email": "phizntrg@hotmail.com"
   },
+  "data message": {
+    "checklist_id": "c9944b8c-3342-4443-99ce-385795384f00",
+    "checklist_name": "Checklist No 390",
+    "items": [
+      {
+        "item_id": "8b76d968-848d-4067-9d00-a6d13031d6b9",
+        "item_title": "item number 1",
+        "item_value": "1"
+      }
+    ],
+    "timestamp": "2021-08-15 16:07:08.204399",
+    "user_id": "584f6006-dc4b-4dd3-bf8b-eafbd98859aa"
+  },
   "user info": {
     "address": {
       "1": "Address 2"
