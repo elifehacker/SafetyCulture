@@ -1,5 +1,5 @@
-from flask import Flask, request, Response
-from monitor import update_msg, print_latest_msgs
+from flask import Flask, request, Response, jsonify
+from monitor import update_msg, print_latest_msgs, get_data_from_uid, get_3rd_party_data_from_email, initialize
 import json
 
 app = Flask(__name__, static_url_path="")
@@ -12,6 +12,16 @@ def process_message():
     update_msg(latest_msgs, msg)
     print_latest_msgs(latest_msgs)
     return Response('', status=201, mimetype='application/json')
+
+@app.route('/api/user_id/<string:user_id>', methods=['GET'])
+def get_user_detail(user_id):
+    data = get_data_from_uid(df, user_id)
+    email = data['email'].to_string(index=False).strip()
+    rsp = dict()
+    rsp['user info'] = data.to_dict()
+    rsp['3rd party info'] = get_3rd_party_data_from_email(email, third_party_data)
+    return jsonify(rsp)
     
 if __name__ == '__main__':
+    df, third_party_data = initialize()
     app.run(debug=True)

@@ -44,9 +44,9 @@ def update_msg(latest_data, msg):
         save_old_msg(latest_data[user_id])
     latest_data[user_id] = msg
 
-def get_data_from_uid(df, msg):
+def get_data_from_uid(df, uid):
     # todo replace this with actual db query/cmd
-    return df[df['user_id'] == msg['user_id']]
+    return df[df['user_id'] == uid]
 
 def get_3rd_party_data_from_email(email, third_party_data):
     # todo replace this with actual request to 3rd party api
@@ -74,9 +74,9 @@ def prompt_for_input(latest_msgs, msg, df, third_party_data):
         elif i == '3':
             print_third_party_data(third_party_data)
         elif i == '4':
-            print(get_data_from_uid(df, msg))
+            print(get_data_from_uid(df, msg['user_id']))
         elif i == '5':
-            data = get_data_from_uid(df, msg)
+            data = get_data_from_uid(df, msg['user_id'])
             email = data['email'].to_string(index=False).strip()
             #print(email)
             print(get_3rd_party_data_from_email(email, third_party_data))
@@ -123,11 +123,8 @@ def stream_processor(lock, backlog, latest_msgs, third_party_data, df):
             write_to_error_log(str(msg), e, PROCESSOR_ERROR_LOG_PATH)
             continue
 
-if __name__ == '__main__':
 
-    backlog = Queue()
-    lock = Lock()
-
+def initialize():
     with open(THIRD_PARTY_PATH, "r") as f:
         third_party_data = list()
         while True:
@@ -135,10 +132,15 @@ if __name__ == '__main__':
             if not line:
                 break
             third_party_data.append(json.loads(line))
-
     df = pd.read_csv(DATABASE_PATH)
-    latest_msgs = dict()
+    return df, third_party_data
 
+
+if __name__ == '__main__':
+    backlog = Queue()
+    lock = Lock()
+    df, third_party_data = initialize()    
+    latest_msgs = dict()
     p_sender = Process(target=stream_sender, args=(lock,backlog))
     p_sender.start()
     stream_processor(lock, backlog, latest_msgs, third_party_data, df)
