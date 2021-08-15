@@ -12,6 +12,17 @@ OPtion 5 finds 3rd party data by getting the email column in what is returned fr
 
 Should there be an error, the error would be caught and saved to a txt file and it does not stop the processing of the rest of the data stream.
 
+## Update
+1. I created a new process to send data in message_bus.json to be received in the main processor. 
+```
+python monitor.py
+```
+2. I created a simple API to demostrate how the data are going to be sent, received and processed. 
+```
+python app.py
+python data_streamer.py
+```
+
 ```
 (base) F:\workspace>cd "Data Engineering Test"
 
