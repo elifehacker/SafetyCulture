@@ -16,8 +16,9 @@ def save_old_msg(old_data):
     # todo save to an actual database
     print('save old message to a database')
 
-def print_latest_msg(latest_data):
+def print_latest_msgs(latest_data):
     # imagine this being the backend of the data viz tool
+    print("====== PRINTING LATEST MSG ======")
     for k in latest_data.keys():
         print(k)
         print(latest_data[k])
@@ -67,7 +68,7 @@ def prompt_for_input(latest_msgs, msg, df, third_party_data):
         if i == '':
             break
         elif i == '1':
-            print_latest_msg(latest_msgs)
+            print_latest_msgs(latest_msgs)
         elif i == '2':
             print(df)
         elif i == '3':
