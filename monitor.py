@@ -8,10 +8,11 @@ THIRD_PARTY_PATH = '3rd_party_data.json'
 ERROR_LOG_PATH = 'error.txt'
 
 def save_old_msg(old_data):
-    # todo save to a database
+    # todo save to an actual database
     print('save old message to a database')
 
 def print_latest_msg(latest_data):
+    # imagine this being the backend of the data viz tool
     for k in latest_data.keys():
         print(k)
         print(latest_data[k])
@@ -30,6 +31,7 @@ def write_to_error_log(line, error):
         f.write('\n')
 
 def update_msg(latest_data, msg):
+    # this function could be refactored to send data to the data viz tool
     user_id = msg['user_id']
     print('update data with user_id', user_id)
     if user_id in latest_data.keys():
