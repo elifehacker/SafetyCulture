@@ -18,6 +18,8 @@ def get_user_detail(user_id):
     data = get_data_from_uid(df, user_id)
     email = data['email'].to_string(index=False).strip()
     rsp = dict()
+    if user_id in latest_msgs.keys():
+        rsp['data message'] = latest_msgs[user_id]
     rsp['user info'] = data.to_dict()
     rsp['3rd party info'] = get_3rd_party_data_from_email(email, third_party_data)
     return jsonify(rsp)
