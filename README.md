@@ -12,8 +12,8 @@ OPtion 5 finds 3rd party data by getting the email column in what is returned fr
 
 Should there be an error, the error would be caught and saved to a txt file and it does not stop the processing of the rest of the data stream.
 
-## Update
-1. I created a new process to send data in message_bus.json to be received in the main processor. 
+## Demo 1
+Standalone python script. I created a separate process to send data in message_bus.json to be received in the main process. 
 
 ```
 (base) F:\workspace>cd "Data Engineering Test"
@@ -170,12 +170,14 @@ enter: proceed
             5: print 3rd party data of the latest message
 ```
 
-2. I created a simple API to demostrate how the data are going to be sent, received and processed. 
+## Demo 2
+I created 2 API endpoints in flask to demostrate how data are sent, received and processed. 
+Receive data from a script 
 ```
 python app.py
 python data_streamer.py
 ```
-
+Query data by requesting an api
 ```
 (base) F:\workspace\Data Engineering Test>curl localhost:5000/api/user_id/584f6006-dc4b-4dd3-bf8b-eafbd98859aa
 {
