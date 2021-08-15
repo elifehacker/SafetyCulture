@@ -1,11 +1,16 @@
-import pandas as pd
 import json
+import pandas as pd
+import time
 from datetime import datetime
+from multiprocessing import Process, Lock, Queue
 
 MESSAGE_BUS_PATH = 'message_bus.json'
 DATABASE_PATH = 'database.csv'
 THIRD_PARTY_PATH = '3rd_party_data.json'
-ERROR_LOG_PATH = 'error.txt'
+SENDER_ERROR_LOG_PATH = 'sender_error.txt'
+PROCESSOR_ERROR_LOG_PATH = 'processor_error.txt'
+SENDER_TIME_INTERVAL_SEC = 10
+PROCESSOR_TIME_INTERVAL_SEC = 1
 
 def save_old_msg(old_data):
     # todo save to an actual database
@@ -21,9 +26,9 @@ def print_third_party_data(third_party_data):
     for line in third_party_data:
         print(line)
 
-def write_to_error_log(line, error):
+def write_to_error_log(line, error, path):
     print('write error to the log', error)
-    with open(ERROR_LOG_PATH, "a") as f:
+    with open(path, "a") as f:
         f.write(line)
         f.write(str(datetime.now()))
         f.write(' ')
@@ -76,7 +81,52 @@ def prompt_for_input(latest_msgs, msg, df, third_party_data):
             print(get_3rd_party_data_from_email(email, third_party_data))
 
 
+def stream_sender(lock, backlog):
+    with open(MESSAGE_BUS_PATH, "r") as f:
+        # simulate message coming in
+        line_count = 0
+        while True:
+            line = f.readline() 
+            line_count += 1
+            if not line:
+                break
+            # keep sending if a message is bogus
+            try:
+                msg = json.loads(line)
+                msg['timestamp'] = datetime.now()
+                with lock:  # always aquire lock before checking shared memory
+                    if not backlog.full():
+                        backlog.put(msg)
+                        print('sender', line_count, msg['user_id'])
+                time.sleep(SENDER_TIME_INTERVAL_SEC)
+            except Exception as e:
+                write_to_error_log(line, e, SENDER_ERROR_LOG_PATH)
+                continue
+        
+
+def stream_processor(lock, backlog, latest_msgs, third_party_data, df):
+    while True:
+        # keep processing if a message is bogus
+        try:
+            msg = ''
+            with lock:  # always aquire lock before checking shared memory
+                if not backlog.empty():
+                    msg = backlog.get()
+                    print('processor', msg['user_id'])
+            if msg != '':
+                update_msg(latest_msgs, msg)
+                prompt_for_input(latest_msgs, msg, df, third_party_data)
+            else:
+                time.sleep(PROCESSOR_TIME_INTERVAL_SEC)
+        except Exception as e:
+            write_to_error_log(str(msg), e, PROCESSOR_ERROR_LOG_PATH)
+            continue
+
 if __name__ == '__main__':
+
+    backlog = Queue()
+    lock = Lock()
+
     with open(THIRD_PARTY_PATH, "r") as f:
         third_party_data = list()
         while True:
@@ -87,18 +137,8 @@ if __name__ == '__main__':
 
     df = pd.read_csv(DATABASE_PATH)
     latest_msgs = dict()
-    with open(MESSAGE_BUS_PATH, "r") as f:
-        # simulate message coming in
-        while True:
-            line = f.readline() 
-            if not line:
-                break
-            # keep processing if a message is bogus
-            try:
-                msg = json.loads(line)
-                msg['timestamp'] = datetime.now()
-                update_msg(latest_msgs, msg)
-                prompt_for_input(latest_msgs, msg, df, third_party_data)
-            except Exception as e:
-                write_to_error_log(line, e)
-                continue
+
+    p_sender = Process(target=stream_sender, args=(lock,backlog))
+    p_sender.start()
+    stream_processor(lock, backlog, latest_msgs, third_party_data, df)
+
