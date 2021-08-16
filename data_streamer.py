@@ -24,7 +24,14 @@ with open(MESSAGE_BUS_PATH, "r") as f:
                 )
                 print(resp.status_code)
                 print(resp.text)
-                time.sleep(5)
             except Exception as e:
                 write_to_error_log(line, e, SENDER_ERROR_LOG_PATH)
-                continue
+
+            time.sleep(5)
+
+'''
+docker build --tag python-docker .
+docker run -p 5000:5000 python-docker
+python data_stream.py
+curl http://127.0.0.1:5000/api/user_id/584f6006-dc4b-4dd3-bf8b-eafbd98859aa
+'''

@@ -26,4 +26,4 @@ def get_user_detail(user_id):
     
 if __name__ == '__main__':
     df, third_party_data = initialize()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

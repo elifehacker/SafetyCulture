@@ -229,3 +229,28 @@ Query data by requesting an api
   }
 }
 ```
+
+The flask application has also been containerized for scaling. 
+
+```
+docker build --tag python-docker .
+docker run -p 5000:5000 python-docker
+python data_stream.py
+curl http://127.0.0.1:5000/api/user_id/584f6006-dc4b-4dd3-bf8b-eafbd98859aa
+```
+
+```
+PS F:\workspace\SaftyCulture> docker run -p 5000:5000 python-docker   
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on all addresses.
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://172.17.0.2:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 643-960-658
+172.17.0.1 - - [16/Aug/2021 07:59:11] "GET /api/user_id/584f6006-dc4b-4dd3-bf8b-eafbd98859aa HTTP/1.1" 200 -
+```
