@@ -6,10 +6,8 @@ import time
 
 with open(MESSAGE_BUS_PATH, "r") as f:
     # simulate message coming in
-    line_count = 0
     while True:
         line = f.readline() 
-        line_count += 1
         if not line:
             break
         # keep sending if a message is bogus
